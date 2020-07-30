@@ -7,9 +7,14 @@ namespace fb
 	class ABall : public AActor
 	{
 	public:
-		explicit ABall(World& world);
+		ABall(World& world, AFireBallsGame& game);
+		void SetTarget(WeakPtr<const AActor> target) noexcept { target_ = std::move(target); }
 
 	private:
+		AFireBallsGame& game_;
 		MeshComponent& mesh_;
+		SphereComponent& collision_;
+		WeakPtr<const AActor> target_;
+		int hp_;
 	};
 }
