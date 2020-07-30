@@ -1,17 +1,31 @@
 #include "Character.hpp"
+#include "Ball.hpp"
+#include "Projectile.hpp"
 #include "World.hpp"
 #include "Camera/CameraComponent.hpp"
 #include "Components/InputComponent.hpp"
 #include "Components/MovementComponent.hpp"
+#include "Components/SphereComponent.hpp"
 
 namespace fb
 {
 	ACharacter::ACharacter(World& world)
 		:AActor{world},
-		movement_{AddComponent<MovementComponent>()},
-		camera_{AddComponent<CameraComponent>()}
+		camera_{AddComponent<CameraComponent>()},
+		collision_{AddComponent<SphereComponent>()},
+		movement_{AddComponent<MovementComponent>()}
 	{
 		SetRootComponent(&camera_);
+		
+		collision_.AttachTo(&camera_, AttachRule::kKeepRelative);
+		collision_.SetUnscaledRadius(36);
+		collision_.AddOnOverlap([this](SphereComponent& other)
+		{
+			if (dynamic_cast<ABall*>(&other.GetOwner()))
+			{
+				Destroy();
+			}
+		});
 
 		auto& input = AddComponent<InputComponent>();
 		input.BindAxis(u8"MoveForward"sv, [this](Float f) { MoveForward(f); });
@@ -40,5 +54,8 @@ namespace fb
 
 	void ACharacter::Fire() const
 	{
+		const auto proj = GetWorld().SpawnActor<AProjectile>();
+		proj->SetPos(GetPos() + *GetForward() * 50);
+		proj->SetRot(GetRot());
 	}
 }

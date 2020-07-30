@@ -15,7 +15,8 @@ namespace fb
 		void Turn(Float f) const noexcept;
 		void Fire() const;
 		
-		MovementComponent& movement_;
 		CameraComponent& camera_;
+		SphereComponent& collision_;
+		MovementComponent& movement_;
 	};
 }
