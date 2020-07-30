@@ -1,6 +1,7 @@
 #include "FireBallsGame.hpp"
 #include "Ball.hpp"
 #include "Character.hpp"
+#include "Debug.hpp"
 #include "Log.hpp"
 #include "World.hpp"
 #include "Actors/DirLight.hpp"
@@ -67,5 +68,6 @@ namespace fb
 		{
 			if (actor.HasTag(tag)) actor.Destroy();
 		});
+		num_balls_ = 0;
 	}
 }

@@ -11,9 +11,9 @@ namespace fb
 {
 	ACharacter::ACharacter(World& world)
 		:AActor{world},
-		camera_{AddComponent<CameraComponent>()},
-		collision_{AddComponent<SphereComponent>()},
-		movement_{AddComponent<MovementComponent>()}
+		camera_{*AddComponent<CameraComponent>()},
+		collision_{*AddComponent<SphereComponent>()},
+		movement_{*AddComponent<MovementComponent>()}
 	{
 		SetRootComponent(&camera_);
 		
@@ -27,11 +27,11 @@ namespace fb
 			}
 		});
 
-		auto& input = AddComponent<InputComponent>();
-		input.BindAxis(u8"MoveForward"sv, [this](Float f) { MoveForward(f); });
-		input.BindAxis(u8"MoveRight"sv, [this](Float f) { MoveRight(f); });
-		input.BindAxis(u8"Turn"sv, [this](Float f) { Turn(f); });
-		input.BindAction(u8"Fire"sv, true, [this]() { Fire(); });
+		const auto input = AddComponent<InputComponent>();
+		input->BindAxis(u8"MoveForward"sv, [this](Float f) { MoveForward(f); });
+		input->BindAxis(u8"MoveRight"sv, [this](Float f) { MoveRight(f); });
+		input->BindAxis(u8"Turn"sv, [this](Float f) { Turn(f); });
+		input->BindAction(u8"Fire"sv, true, [this]() { Fire(); });
 	}
 
 	void ACharacter::MoveForward(Float f) const noexcept

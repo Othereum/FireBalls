@@ -9,8 +9,8 @@ namespace fb
 	ABall::ABall(World& world, AFireBallsGame& game)
 		:AActor{world},
 		game_{game},
-		mesh_{AddComponent<MeshComponent>()},
-		collision_{AddComponent<SphereComponent>()},
+		mesh_{*AddComponent<MeshComponent>()},
+		collision_{*AddComponent<SphereComponent>()},
 		hp_{ 5 }
 	{
 		SetRootComponent(&mesh_);

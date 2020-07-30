@@ -6,8 +6,8 @@ namespace fb
 {
 	AProjectile::AProjectile(World& world)
 		:AActor{world},
-		mesh_{AddComponent<MeshComponent>()},
-		collision_{AddComponent<SphereComponent>()}
+		mesh_{*AddComponent<MeshComponent>()},
+		collision_{*AddComponent<SphereComponent>()}
 	{
 		SetRootComponent(&mesh_);
 		mesh_.SetMesh(u8"../Engine/Assets/Sphere.omesh"sv);
