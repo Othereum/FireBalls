@@ -11,7 +11,14 @@ namespace fb
 	{
 		SetRootComponent(&mesh_);
 		mesh_.SetMesh(u8"../Engine/Assets/Sphere.omesh"sv);
-		collision_.SetRadius(mesh_.GetRadius());
+		mesh_.SetRelScale({All{}, 0.5_f});
+
+		collision_.AttachTo(&mesh_, AttachRule::kKeepRelative);
+		collision_.SetUnscaledRadius(mesh_.GetUnscaledRadius());
+		collision_.AddOnOverlap([this](SphereComponent&) { Destroy(); });
+
+		SetLifespan(3);
+		AddTag(kTransientTag);
 	}
 
 	void AProjectile::OnUpdate(Float delta_seconds)
