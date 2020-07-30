@@ -7,4 +7,6 @@ namespace fb
 	class ACharacter;
 	class AFireBallsGame;
 	class ABall;
+	
+	constexpr auto kTransientTag = u8"Transient"sv;
 }

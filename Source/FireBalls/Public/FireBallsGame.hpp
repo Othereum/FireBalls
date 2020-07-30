@@ -8,11 +8,18 @@ namespace fb
 	{
 	public:
 		explicit AFireBallsGame(World& world);
+		void OnBallDestroy();
+
+	protected:
+		void OnBeginPlay() override;
+		void OnUpdate(Float delta_seconds) override;
 
 	private:
-		void SpawnBall();
+		void StartGame();
+		void CleanGame();
 		
-		ACharacter& character_;
-		DyArr<std::reference_wrapper<ABall>> balls_;
+		WeakPtr<ACharacter> character_;
+		TimePoint start_;
+		int num_balls_ = 0;
 	};
 }
