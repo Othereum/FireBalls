@@ -1,0 +1,4 @@
+{
+	"shader": "../Shaders/Floor",
+	"texture": "../Engine/Assets/Bricks.png"
+}
