@@ -10,6 +10,9 @@ namespace fb
 		ABall(World& world, AFireBallsGame& game);
 		void SetTarget(WeakPtr<const AActor> target) noexcept { target_ = std::move(target); }
 
+	protected:
+		void OnUpdate(Float delta_seconds) override;
+		
 	private:
 		AFireBallsGame& game_;
 		MeshComponent& mesh_;

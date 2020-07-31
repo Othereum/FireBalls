@@ -11,7 +11,7 @@ namespace fb
 		game_{game},
 		mesh_{*AddComponent<MeshComponent>()},
 		collision_{*AddComponent<SphereComponent>()},
-		hp_{ 5 }
+		hp_{ 3 }
 	{
 		SetRootComponent(&mesh_);
 		mesh_.SetMesh(u8"../Engine/Assets/Sphere.omesh"sv);
@@ -22,11 +22,24 @@ namespace fb
 		
 		collision_.AddOnOverlap([this](SphereComponent& other)
 		{
-			if (dynamic_cast<AProjectile*>(&other.GetOwner()) && --hp_ <= 0)
+			if (dynamic_cast<AProjectile*>(&other.GetOwner()))
 			{
-				game_.OnBallDestroy();
-				Destroy();
+				if (--hp_ <= 0)
+				{
+					game_.OnBallKilled();
+					Destroy();
+				}
 			}
 		});
+	}
+
+	void ABall::OnUpdate(Float delta_seconds)
+	{
+		if (const auto target = target_.lock())
+		{
+			auto dir = target->GetPos() - GetPos();
+			dir.TryNormalize();
+			SetPos(GetPos() + dir * (330 * delta_seconds));
+		}
 	}
 }
