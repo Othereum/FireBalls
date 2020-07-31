@@ -9,9 +9,6 @@ namespace fb
 	public:
 		explicit ACharacter(World& world);
 
-	protected:
-		void OnUpdate(Float delta_seconds) override;
-
 	private:
 		void MoveForward(Float f) const noexcept;
 		void MoveRight(Float f) const noexcept;
