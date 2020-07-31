@@ -2,7 +2,12 @@
     "ActionMap": {
         "Fire": [
             { "Code": "MouseBtn.L" },
-            { "Code": "CtrlAxis.righttrigger" }
+            { "Code": "MouseBtn.R" },
+            { "Code": "Keycode.Space" },
+            { "Code": "CtrlAxis.lefttrigger" },
+            { "Code": "CtrlAxis.righttrigger" },
+            { "Code": "CtrlBtn.leftshoulder" },
+            { "Code": "CtrlBtn.rightshoulder" }
         ]
     },
     "AxisMap": {
