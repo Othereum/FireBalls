@@ -11,18 +11,19 @@ namespace fb
 	{
 		SetRootComponent(&mesh_);
 		mesh_.SetMesh(u8"../Engine/Assets/Sphere.omesh"sv);
+		mesh_.SetMaterial(u8"../Assets/Projectile.omat"sv);
 		mesh_.SetRelScale({All{}, 0.5_f});
 
 		collision_.AttachTo(&mesh_, AttachRule::kKeepRelative);
 		collision_.SetUnscaledRadius(mesh_.GetUnscaledRadius());
 		collision_.AddOnOverlap([this](SphereComponent&) { Destroy(); });
 
-		SetLifespan(3);
+		SetLifespan(1);
 		AddTag(kTransientTag);
 	}
 
 	void AProjectile::OnUpdate(Float delta_seconds)
 	{
-		SetPos(GetPos() + *GetForward() * (1000 * delta_seconds));
+		SetPos(GetPos() + *GetForward() * (2000 * delta_seconds));
 	}
 }
