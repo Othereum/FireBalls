@@ -7,8 +7,12 @@ namespace fb
 	class AFireBallsGame : public AActor
 	{
 	public:
+		DELETE_CPMV(AFireBallsGame);
+		
 		explicit AFireBallsGame(World& world);
-		void OnBallDestroy();
+		~AFireBallsGame();
+		
+		void OnBallKilled();
 
 	protected:
 		void OnBeginPlay() override;
@@ -17,9 +21,11 @@ namespace fb
 	private:
 		void StartGame();
 		void CleanGame();
+		void PrintScore() const;
 		
 		WeakPtr<ACharacter> character_;
 		TimePoint start_;
 		int num_balls_ = 0;
+		int num_kills_ = 0;
 	};
 }

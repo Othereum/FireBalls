@@ -1,4 +1,5 @@
 #include "FireBallsGame.hpp"
+#include "Engine.hpp"
 #include "Ball.hpp"
 #include "Character.hpp"
 #include "Debug.hpp"
@@ -18,9 +19,15 @@ namespace fb
 		sun->SetRot({UVec3::right, 70_deg});
 	}
 
-	void AFireBallsGame::OnBallDestroy()
+	AFireBallsGame::~AFireBallsGame()
+	{
+		PrintScore();
+	}
+
+	void AFireBallsGame::OnBallKilled()
 	{
 		num_balls_ = Max(0, num_balls_ - 1);
+		++num_kills_;
 	}
 
 	void AFireBallsGame::OnBeginPlay()
@@ -30,18 +37,18 @@ namespace fb
 
 	void AFireBallsGame::OnUpdate([[maybe_unused]] Float delta_seconds)
 	{
-		constexpr auto max_balls = 10;
-		const auto chr = character_.lock();
+		Engine::Get().GetRenderer().GetWindow().SetTitle(Format(u8"Fire Balls [Score: {}]"sv, num_kills_));
 		
+		const auto chr = character_.lock();
 		if (!chr)
 		{
-			const auto dur = duration_cast<time::seconds>(Clock::now() - start_);
-			log::Info(u8"You survived for {} seconds!"sv, dur.count());
+			PrintScore();
 			CleanGame();
 			StartGame();
 			return;
 		}
 		
+		constexpr auto max_balls = 10;
 		if (num_balls_ < max_balls)
 		{
 			const auto ball = GetWorld().SpawnActor<ABall>(*this);
@@ -69,5 +76,12 @@ namespace fb
 			if (actor.HasTag(tag)) actor.Destroy();
 		});
 		num_balls_ = 0;
+		num_kills_ = 0;
+	}
+
+	void AFireBallsGame::PrintScore() const
+	{
+		const auto dur = duration_cast<time::seconds>(Clock::now() - start_);
+		log::Info(u8"Score: {}; Survived for: {}s"sv, num_kills_, dur.count());
 	}
 }
